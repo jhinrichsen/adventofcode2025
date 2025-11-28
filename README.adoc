@@ -1,0 +1,94 @@
+= Advent of Code 2025
+:doctype: book
+:toc: macro
+:sectnums:
+
+image:https://godoc.org/gitlab.com/jhinrichsen/adventofcode2025?status.svg["godoc", link="https://godoc.org/gitlab.com/jhinrichsen/adventofcode2025"]
+image:https://goreportcard.com/badge/gitlab.com/jhinrichsen/adventofcode2025["Go report card", link="https://goreportcard.com/report/gitlab.com/jhinrichsen/adventofcode2025"]
+image:https://gitlab.com/jhinrichsen/adventofcode2025/badges/main/pipeline.svg[link="https://gitlab.com/jhinrichsen/adventofcode2025/-/commits/main",title="pipeline status"]
+image:https://gitlab.com/jhinrichsen/adventofcode2025/badges/main/coverage.svg[link="https://gitlab.com/jhinrichsen/adventofcode2025/-/commits/main",title="coverage report"]
+image:https://img.shields.io/badge/runtime-1.9%20s-brightgreen.svg["runtime: tbd"]
+
+toc::[]
+
+My take on https://adventofcode.com/2025/ in Go.
+As usual, i don't particularly care if i provide my solutions _fast_, i try to be _correct_ on the first answer, and care for being runtime efficient.
+The goal is to be subsecond for all puzzles - all puzzles sequentially under one second, not each puzzle. Aim high.
+
+Answers are hard coded into the unit tests, so avoid looking at `_test.go` files.
+
+== Number of tries
+
+|===
+| Day | Part 1 | Part 2
+| 1   |        |
+| 2   |        |
+| 3   |        |
+| 4   |        |
+| 5   |        |
+| 6   |        |
+| 7   |        |
+| 8   |        |
+| 9   |        |
+| 10  |        |
+| 11  |        |
+| 12  |        |
+| 13  |        |
+| 14  |        |
+| 15  |        |
+| 16  |        |
+| 17  |        |
+| 18  |        |
+| 19  |        |
+| 20  |        |
+| 21  |        |
+| 22  |        |
+| 23  |        |
+| 24  |        |
+| 25  |        |
+|===
+
+== Day 1: (Unknown yet)
+
+== Benchmarks
+
+NOTE: work in progress until end of AOC
+
+The total runtime to run each the benchmark for each day (1..25), part 1 and 2 (except for day 25, which does not have a part 2) is
+
+----
+To be determined...
+----
+
+== SAST (Static Application Security Testing)
+
+This project uses custom SAST tooling in GitLab CI, optimized for the free tier.
+
+=== GitLab Free Tier Limitations
+
+GitLab's built-in SAST features (Security Dashboard, vulnerability management, merge request security widgets) require the Ultimate tier. On the free tier, SAST scans can run but results are only available as downloadable JSON artifacts.
+
+=== Current Setup
+
+Our CI pipeline uses:
+
+- Code Quality Reports: golangci-lint → JSON → banyansecurity/golint-convert → CodeClimate JSON format
+  * Displays findings in merge request Code Quality widget (available in free tier since GitLab 13.2)
+  * Shows code quality degradations/improvements directly in MRs
+
+- Test Reports: go-junit-report/v2 → JUnit XML format
+  * Integrates test results into GitLab's test report UI
+
+- Coverage Reports: gocover-cobertura → Cobertura XML format
+  * Shows coverage metrics and trends in merge requests
+
+- Vulnerability Scanning: govulncheck (periodic, scheduled pipeline)
+  * Scans for known vulnerabilities in Go dependencies
+  * Runs on a schedule to catch newly disclosed vulnerabilities
+  * Results available as JSON artifacts (no UI on free tier)
+
+=== Note on Deprecation
+
+GitLab deprecated its built-in CodeClimate scanning template in version 17.3 (planned removal in 19.0). This only affects GitLab's bundled scanning engine. Custom pipelines that generate CodeClimate-format JSON (like ours) continue to work and are the recommended approach for free tier users.
+
+The Code Quality widget will continue to display results from custom CodeClimate JSON reports.
