@@ -1,13 +1,12 @@
 package adventofcode2025
 
-import "fmt"
-
 func Day01(buf []byte, part1 bool) (uint, error) {
 	const (
 		LEFT    = 'L'
 		RIGHT   = 'R'
 		RANGE   = 100 // 0..99
 		NEWLINE = 0x0a
+		BIT     = 2 // L and R differ in bit position 2
 	)
 
 	var count uint
@@ -17,14 +16,7 @@ func Day01(buf []byte, part1 bool) (uint, error) {
 	// conventional for loop because index is mutated inside the loop
 	for i := 0; i < len(buf); i++ {
 		// direction
-		var sign int
-		if buf[i] == LEFT {
-			sign = -1
-		} else if buf[i] == RIGHT {
-			sign = 1
-		} else {
-			return 0, fmt.Errorf("Want %c or %c but got %c", LEFT, RIGHT, buf[i])
-		}
+		sign := (int(buf[i] & 2)) - 1
 		i++
 
 		// number
