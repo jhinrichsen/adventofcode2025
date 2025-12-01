@@ -48,7 +48,7 @@ Answers are hard coded into the unit tests, so avoid looking at `_test.go` files
 | 25  |        |
 |===
 
-== Day 1: (Unknown yet)
+== Day 1: Secret Entrance
 
 On modern CPUs, the branchless multiplication approach (using `value * sign`) is typically *faster* in most scenarios.
 
