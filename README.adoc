@@ -50,6 +50,77 @@ Answers are hard coded into the unit tests, so avoid looking at `_test.go` files
 
 == Day 1: (Unknown yet)
 
+= Branch vs Branchless Multiplication Performance
+:toc:
+:icons: font
+
+== Overview
+
+On modern CPUs, the branchless multiplication approach (using `value * sign`) is typically *faster* in most scenarios.
+
+== Key Performance Factors
+
+=== 1. Branch Misprediction Penalty
+
+Modern CPUs use speculative execution and pipelining:
+
+* An `if` statement creates a branch that must be predicted
+* Misprediction cost: ~10-20 cycles (pipeline flush)
+* Correct prediction cost: ~1-2 cycles
+
+=== 2. Multiplication Speed
+
+Modern CPUs have fast integer multipliers:
+
+* Integer multiplication: 1-3 cycles latency on modern x86/ARM
+* Nearly as fast as addition/subtraction
+
+=== 3. Branchless is Predictable
+
+* `value * sign` has no branches
+* Allows consistent pipelining
+* No dependence on branch predictor
+
+== Performance Comparison
+
+.Branch Approach
+[source,go]
+----
+// Branch approach
+if (sign >= 0) {
+    result = a + b
+} else {
+    result = a - b
+}
+// Cost: 1 cycle if predicted correctly, 10-20 if mispredicted
+----
+
+.Branchless Approach
+[source,c]
+----
+// Branchless approach
+result = a + (b * sign);  // where sign is +1 or -1
+// Cost: ~3 cycles consistently
+----
+
+== When Each Approach Wins
+
+[cols="1,3"]
+|===
+|Approach |Optimal Scenario
+
+|Multiplication
+|When signs are unpredictable (random data)
+
+|Branch
+|When signs are highly predictable (>95% same direction)
+|===
+
+== Conclusion
+
+TIP: For general-purpose code with mixed/unpredictable data as in our puzzle, multiplication is faster because avoiding
+branch mispredictions saves more time than the tiny extra cost of multiplication.
+
 == Benchmarks
 
 NOTE: work in progress until end of AOC

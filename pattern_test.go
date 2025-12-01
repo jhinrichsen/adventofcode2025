@@ -61,6 +61,20 @@ func testLines[R comparable](
 	}
 }
 
+// bench is a generic benchmark helper for day part benchmarks using a solver.
+func bench[T any](
+	b *testing.B,
+	day uint8,
+	part1 bool,
+	solver func([]byte, bool) (T, error),
+) {
+	b.Helper()
+	puzzle := file(b, day)
+	for b.Loop() {
+		_, _ = solver(puzzle, part1)
+	}
+}
+
 // benchWithParser is a generic benchmark helper for day part benchmarks using a parser and solver.
 func benchWithParser[P any, R any](
 	b *testing.B,
