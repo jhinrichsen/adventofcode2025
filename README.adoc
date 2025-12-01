@@ -7,7 +7,7 @@ image:https://godoc.org/gitlab.com/jhinrichsen/adventofcode2025?status.svg["godo
 image:https://goreportcard.com/badge/gitlab.com/jhinrichsen/adventofcode2025["Go report card", link="https://goreportcard.com/report/gitlab.com/jhinrichsen/adventofcode2025"]
 image:https://gitlab.com/jhinrichsen/adventofcode2025/badges/main/pipeline.svg[link="https://gitlab.com/jhinrichsen/adventofcode2025/-/commits/main",title="pipeline status"]
 image:https://gitlab.com/jhinrichsen/adventofcode2025/badges/main/coverage.svg[link="https://gitlab.com/jhinrichsen/adventofcode2025/-/commits/main",title="coverage report"]
-image:https://img.shields.io/badge/runtime-1.9%20s-brightgreen.svg["runtime: tbd"]
+image:https://img.shields.io/badge/runtime-tbd-brightgreen.svg["runtime: tbd"]
 
 toc::[]
 
@@ -50,15 +50,7 @@ Answers are hard coded into the unit tests, so avoid looking at `_test.go` files
 
 == Day 1: (Unknown yet)
 
-= Branch vs Branchless Multiplication Performance
-:toc:
-:icons: font
-
-== Overview
-
 On modern CPUs, the branchless multiplication approach (using `value * sign`) is typically *faster* in most scenarios.
-
-== Key Performance Factors
 
 === 1. Branch Misprediction Penalty
 
@@ -81,7 +73,7 @@ Modern CPUs have fast integer multipliers:
 * Allows consistent pipelining
 * No dependence on branch predictor
 
-== Performance Comparison
+=== Performance Comparison
 
 .Branch Approach
 [source,go]
@@ -103,7 +95,7 @@ result = a + (b * sign);  // where sign is +1 or -1
 // Cost: ~3 cycles consistently
 ----
 
-== When Each Approach Wins
+=== When Each Approach Wins
 
 [cols="1,3"]
 |===
@@ -116,7 +108,7 @@ result = a + (b * sign);  // where sign is +1 or -1
 |When signs are highly predictable (>95% same direction)
 |===
 
-== Conclusion
+=== Conclusion
 
 TIP: For general-purpose code with mixed/unpredictable data as in our puzzle, multiplication is faster because avoiding
 branch mispredictions saves more time than the tiny extra cost of multiplication.
