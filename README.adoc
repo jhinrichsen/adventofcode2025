@@ -75,25 +75,17 @@ Modern CPUs have fast integer multipliers:
 
 === Performance Comparison
 
-.Branch Approach
-[source,go]
-----
-// Branch approach
-if (sign >= 0) {
-    result = a + b
-} else {
-    result = a - b
-}
-// Cost: 1 cycle if predicted correctly, 10-20 if mispredicted
-----
+	// Branch approach
+	if (sign >= 0) {
+	    result = a + b
+	} else {
+	    result = a - b
+	}
+	// Cost: 1 cycle if predicted correctly, 10-20 if mispredicted
 
-.Branchless Approach
-[source,c]
-----
-// Branchless approach
-result = a + (b * sign);  // where sign is +1 or -1
-// Cost: ~3 cycles consistently
-----
+	// Branchless approach
+	result = a + (b * sign);  // where sign is +1 or -1
+	// Cost: ~3 cycles consistently
 
 === When Each Approach Wins
 
@@ -119,9 +111,7 @@ NOTE: work in progress until end of AOC
 
 The total runtime to run each the benchmark for each day (1..25), part 1 and 2 (except for day 25, which does not have a part 2) is
 
-----
-To be determined...
-----
+	to be determined...
 
 == SAST (Static Application Security Testing)
 
