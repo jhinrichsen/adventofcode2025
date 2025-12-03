@@ -89,14 +89,6 @@ This approach has no branches, allowing consistent pipelining regardless of inpu
 
 On modern CPUs, the branchless multiplication approach is typically *faster* in unpredictable scenarios.
 
-=== Branch Misprediction Penalty
-
-Modern CPUs use speculative execution and pipelining:
-
-* An `if` statement creates a branch that must be predicted
-* Misprediction cost: ~10-20 cycles (pipeline flush)
-* Correct prediction cost: ~1-2 cycles
-
 === Branchless is Predictable
 
 * `value * sign` has no branches
