@@ -131,7 +131,7 @@ This exploits the ASCII encoding of 'L' and 'R':
 * `'L'` = 0x4C = 0b010011**0**0 (ASCII 76)
 * `'R'` = 0x52 = 0b010100**1**0 (ASCII 82)
 
-Notice that bit position 2 (the `4` bit, or `0b00000100`) differs between them:
+Notice that bit position 2 (the `2` bit, or `0b00000010`) differs between them:
 
 * `'L' & 0b00000010` = 0b01001100 & 0b00000000 = 0
 * `'R' & 0b00000010` = 0b01010010 & 0b00000010 = 2
