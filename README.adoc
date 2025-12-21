@@ -21,8 +21,8 @@ Answers are hard coded into the unit tests, so avoid looking at `_test.go` files
 
 |===
 | Day | Part 1 | Part 2
-| 1   |        |
-| 2   |        |
+| 1   |   1    |   1
+| 2   |   2    |         <1>
 | 3   |        |
 | 4   |        |
 | 5   |        |
@@ -47,6 +47,7 @@ Answers are hard coded into the unit tests, so avoid looking at `_test.go` files
 | 24  |        |
 | 25  |        |
 |===
+<1> did not consider the last pair due to wrong termination logic
 
 == Day 1: Secret Entrance
 
