@@ -172,6 +172,127 @@ The optimized `Day01()` function showcases several performance techniques:
 
 Interestingly, the branchless direction extraction is ~ 2.5% slower than the branched version despite using only one AND and one SUB operation, likely due to the highly predictable nature of the branch predictor on this input.
 
+== Day 3: Bounds Check Elimination
+
+The puzzle requires finding the two largest digits on each line, where the left digit `l` must leave at least one position for the right digit `r`.
+
+=== The Problem with Bounds Checks
+
+The Go compiler inserts runtime bounds checks to prevent out-of-bounds array/slice access. While necessary for safety, these checks have a performance cost:
+
+* Check cost: Typically 1-2 instructions
+* Failed check: Triggers a panic
+* In hot loops: The cumulative cost adds up
+
+The compiler can eliminate bounds checks when it can prove the access is safe, but it needs help.
+
+=== Original Implementation (with bounds checks)
+
+[source,go]
+----
+start := 0
+for i := range buf {
+    if buf[i] == '\n' {
+        line := buf[start:i]
+
+        var l, r byte
+        for j := 0; j < len(line)-1; j++ {
+            b := line[j]
+            if b > l {
+                l = b
+                r = 0
+            } else if b > r {
+                r = b
+            }
+        }
+        last := line[len(line)-1]  // Bounds check here
+        if last > r {
+            r = last
+        }
+
+        sum += 10*uint(l-'0') + uint(r-'0')
+        start = i + 1
+    }
+}
+----
+
+Performance: 72.02 ns/op
+
+The compiler couldn't prove that `line[len(line)-1]` is safe because it couldn't verify that `len(line) > 0`.
+
+=== Optimized Implementation (bounds check eliminated)
+
+[source,go]
+----
+start := 0
+for i := range buf {
+    if buf[i] == '\n' {
+        line := buf[start:i:i]  // Three-index slice sets capacity
+
+        var l, r byte
+        n := len(line)
+        if n > 0 {  // Explicit length check
+            _ = line[n-1]  // Bounds check hint
+            for j := 0; j < n-1; j++ {
+                b := line[j]
+                if b > l {
+                    l = b
+                    r = 0
+                } else if b > r {
+                    r = b
+                }
+            }
+            last := line[n-1]  // No bounds check!
+            if last > r {
+                r = last
+            }
+
+            sum += 10*uint(l-'0') + uint(r-'0')
+        }
+        start = i + 1
+    }
+}
+----
+
+Performance: 60.23 ns/op (16.4% faster)
+
+=== Key Techniques
+
+1. Explicit length check: `if n > 0` tells the compiler the line is non-empty
+2. Bounds check hint: `_ = line[n-1]` proves to the compiler that `n-1` is a valid index
+3. Three-index slice: `buf[start:i:i]` sets the capacity, potentially helping with other optimizations
+
+=== Verification
+
+You can verify bounds check elimination using:
+
+[source,bash]
+----
+go build -gcflags='-d=ssa/check_bce/debug=1' day03.go 2>&1 | grep day03.go
+----
+
+Before:
+----
+./day03.go:13:15: Found IsSliceInBounds
+./day03.go:27:16: Found IsInBounds
+----
+
+After:
+----
+./day03.go:13:15: Found IsSliceInBounds
+----
+
+The bounds check on line 27 (accessing `line[n-1]`) was eliminated. The remaining check on the slice creation has minimal performance impact.
+
+=== Benchmark Results
+
+----
+BenchmarkDay03Before-16    	165981520	72.02 ns/op	0 B/op	0 allocs/op
+BenchmarkDay03After-16     	209604871	60.23 ns/op	0 B/op	0 allocs/op
+----
+
+Improvement: ~16.4% faster, with zero allocations in both versions.
+
 == Benchmarks
 
 NOTE: work in progress until end of AOC
