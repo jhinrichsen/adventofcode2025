@@ -120,7 +120,7 @@ func TestDay02Part1(t *testing.T) {
 }
 
 func TestDay02Part2(t *testing.T) {
-	testSolver(t, 2, filename, false, Day02, 0)
+	testSolver(t, 2, filename, false, Day02, 28915664389)
 }
 
 func BenchmarkDay02Part1(b *testing.B) {
