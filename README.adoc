@@ -28,7 +28,7 @@ Answers are hard coded into the unit tests, so avoid looking at `_test.go` files
 | 5   |        |
 | 6   |        |
 | 7   |        |
-| 8   |        |
+| 8   |   1    |   1    <2>
 | 9   |        |
 | 10  |        |
 | 11  |        |
@@ -48,6 +48,7 @@ Answers are hard coded into the unit tests, so avoid looking at `_test.go` files
 | 25  |        |
 |===
 <1> did not consider the last pair due to wrong termination logic
+<2> Prim's finds different last edge than Kruskal—puzzle requires continuing Kruskal order
 
 == Day 1: Secret Entrance
 
@@ -172,11 +173,9 @@ The optimized `Day01()` function showcases several performance techniques:
 
 Interestingly, the branchless direction extraction is ~ 2.5% slower than the branched version despite using only one AND and one SUB operation, likely due to the highly predictable nature of the branch predictor on this input.
 
-== Day 3: Bounds Check Elimination
+== Day 3: Lobby
 
-The puzzle requires finding the two largest digits on each line, where the left digit `l` must leave at least one position for the right digit `r`.
-
-=== The Problem with Bounds Checks
+=== Bounds Check Elimination
 
 The Go compiler inserts runtime bounds checks to prevent out-of-bounds array/slice access. While necessary for safety, these checks have a performance cost:
 
@@ -333,3 +332,9 @@ Our CI pipeline uses:
 GitLab deprecated its built-in CodeClimate scanning template in version 17.3 (planned removal in 19.0). This only affects GitLab's bundled scanning engine. Custom pipelines that generate CodeClimate-format JSON (like ours) continue to work and are the recommended approach for free tier users.
 
 The Code Quality widget will continue to display results from custom CodeClimate JSON reports.
+
+== Day 8: Playground
+
+Uses Kruskal's algorithm for both parts—puzzle says "continue connecting" which requires same sorted edge order.
+
+See `doc/mst.adoc` for background on Union-Find with path compression.

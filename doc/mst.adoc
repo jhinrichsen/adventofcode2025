@@ -1,0 +1,170 @@
+= Minimum Spanning Tree Algorithms
+:toc:
+
+== Overview
+
+A Minimum Spanning Tree (MST) connects all vertices in a weighted graph with the minimum total edge weight, using exactly V-1 edges (where V is the number of vertices).
+
+Two classic algorithms exist: Kruskal's (edge-centric) and Prim's (vertex-centric).
+
+== Kruskal's Algorithm
+
+=== Approach
+
+1. Sort all edges by weight
+2. Process edges in ascending order
+3. Add edge if it connects two different components
+4. Stop when V-1 edges added
+
+=== Data Structure: Union-Find
+
+Efficiently tracks connected components with two operations:
+
+* *Find(x)*: Return the root of x's component
+* *Union(x, y)*: Merge components containing x and y
+
+==== Basic Implementation
+
+[source,go]
+----
+parent := make([]int, n)
+for i := range n {
+    parent[i] = i
+}
+
+func find(x int) int {
+    if parent[x] != x {
+        return find(parent[x])
+    }
+    return x
+}
+
+func union(x, y int) {
+    parent[find(x)] = find(y)
+}
+----
+
+==== Path Compression
+
+Flatten tree during find—every node points directly to root:
+
+[source,go]
+----
+func find(x int) int {
+    if parent[x] != x {
+        parent[x] = find(parent[x])
+    }
+    return parent[x]
+}
+----
+
+==== Union by Size
+
+Attach smaller tree under larger:
+
+[source,go]
+----
+func union(x, y int) {
+    rx, ry := find(x), find(y)
+    if rx == ry {
+        return
+    }
+    if size[rx] < size[ry] {
+        rx, ry = ry, rx
+    }
+    parent[ry] = rx
+    size[rx] += size[ry]
+}
+----
+
+=== Complexity
+
+* Sorting: O(E log E)
+* Union-Find operations: O(E × α(V)), where α is inverse Ackermann (effectively O(1))
+* *Total*: O(E log E)
+
+=== When to Use
+
+* Sparse graphs (E << V²)
+* When you need edges in sorted order anyway
+* When processing "K closest pairs"
+
+== Prim's Algorithm
+
+=== Approach
+
+1. Start with arbitrary vertex in tree
+2. Repeatedly add the minimum-weight edge connecting tree to non-tree vertex
+3. Stop when all vertices in tree
+
+=== Implementation (Dense Graph)
+
+For dense graphs, simple O(V²) version without heap:
+
+[source,go]
+----
+dist := make([]int64, n)   // min distance to tree
+parent := make([]int, n)
+inTree := make([]bool, n)
+
+for i := range n {
+    dist[i] = math.MaxInt64
+}
+dist[0] = 0
+
+for range n {
+    // find closest non-tree vertex
+    u := -1
+    for v := range n {
+        if !inTree[v] && (u == -1 || dist[v] < dist[u]) {
+            u = v
+        }
+    }
+    inTree[u] = true
+
+    // update distances to remaining vertices
+    for v := range n {
+        if !inTree[v] {
+            d := distance(u, v)
+            if d < dist[v] {
+                dist[v] = d
+                parent[v] = u
+            }
+        }
+    }
+}
+----
+
+=== Complexity
+
+* Dense graph (no heap): O(V²)
+* Sparse graph (binary heap): O(E log V)
+* Sparse graph (Fibonacci heap): O(E + V log V)
+
+=== When to Use
+
+* Dense graphs (E ≈ V²)
+* When you don't need sorted edges
+* When memory is constrained (no edge list needed)
+
+== Comparison
+
+[cols="1,1,1"]
+|===
+| Aspect | Kruskal | Prim
+
+| Approach | Edge-centric | Vertex-centric
+| Data structure | Union-Find | Priority queue or array
+| Best for | Sparse graphs | Dense graphs
+| Edge storage | Required | Not required
+| Complexity | O(E log E) | O(V²) or O(E log V)
+|===
+
+== Application in Day 8
+
+* *Part 1*: Connect K closest pairs → Kruskal (need sorted edges)
+* *Part 2*: Connect all (MST) → Prim's (O(V²) optimal for dense graph)
+
+With 1000 vertices:
+* Kruskal: sort 500K edges ≈ 10M operations
+* Prim's: V² ≈ 1M operations
