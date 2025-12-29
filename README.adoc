@@ -9,6 +9,8 @@ image:https://gitlab.com/jhinrichsen/adventofcode2025/badges/main/pipeline.svg[l
 image:https://gitlab.com/jhinrichsen/adventofcode2025/badges/main/coverage.svg[link="https://gitlab.com/jhinrichsen/adventofcode2025/-/commits/main",title="coverage report"]
 image:https://img.shields.io/badge/runtime-tbd-brightgreen.svg["runtime: tbd"]
 
+image::aoc-stars.png[Advent of Code Stars - 524 total]
+
 toc::[]
 
 My take on https://adventofcode.com/2025/ in Go.

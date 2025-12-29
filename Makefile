@@ -66,8 +66,9 @@ else
 endif
 
 .PHONY: total
-total: $(BENCH_FILE) ## Run benchmarks and show total runtime
-	@awk -f total.awk < $(BENCH_FILE)
+total: .cpuname ## Run benchmarks and show total runtime
+	@BENCH_FILE="benches/$$($(GO) env GOOS)-$$($(GO) env GOARCH)-$$(cat .cpuname).txt"; \
+	$(MAKE) --no-print-directory "$$BENCH_FILE" && awk -f total.awk < "$$BENCH_FILE"
 
 .PHONY: total-nogc
 total-nogc: ## Run benchmarks with GOGC=off and show total runtime
