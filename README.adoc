@@ -7,7 +7,7 @@ image:https://godoc.org/gitlab.com/jhinrichsen/adventofcode2025?status.svg["godo
 image:https://goreportcard.com/badge/gitlab.com/jhinrichsen/adventofcode2025["Go report card", link="https://goreportcard.com/report/gitlab.com/jhinrichsen/adventofcode2025"]
 image:https://gitlab.com/jhinrichsen/adventofcode2025/badges/main/pipeline.svg[link="https://gitlab.com/jhinrichsen/adventofcode2025/-/commits/main",title="pipeline status"]
 image:https://gitlab.com/jhinrichsen/adventofcode2025/badges/main/coverage.svg[link="https://gitlab.com/jhinrichsen/adventofcode2025/-/commits/main",title="coverage report"]
-image:https://img.shields.io/badge/runtime-tbd-brightgreen.svg["total runtime: 0.6 seconds"]
+image:https://img.shields.io/badge/runtime-0.6s-brightgreen.svg["runtime"]
 
 image::aoc-stars.png[Advent of Code Stars - 524 total]
 
